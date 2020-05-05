@@ -18,6 +18,6 @@ import App = firebase.app.App;
 declare module 'vue/types/vue' {
 
   interface Vue {
-    $fire: App
+    $fire: App;
   }
 }

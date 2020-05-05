@@ -45,6 +45,7 @@
 <script lang="ts">
 import Vue from "vue";
 import {doLogin, doLogout} from "@/auth.service";
+import router from "@/router";
 
 export default Vue.extend({
   name: "App",
@@ -59,7 +60,7 @@ export default Vue.extend({
 
   methods: {
     onLogin() {
-      doLogin()
+      router.push({path: 'login'})
     },
     onLogout() {
       doLogout()
@@ -67,6 +68,9 @@ export default Vue.extend({
   },
   mounted(){
     console.log('mounted')
+    if (!this.$store.getters.currentUser) {
+      router.push('login')
+    }
   }
 });
 </script>

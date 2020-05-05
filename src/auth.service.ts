@@ -1,10 +1,13 @@
 import firebase, {User} from "firebase";
 import store from "@/store";
+import router from "@/router";
 
 export function doLogin(): Promise<User> {
   return firebase
     .auth()
-    .signInWithRedirect(new firebase.auth.GoogleAuthProvider())
+    .signInWithRedirect(
+      new firebase.auth.GoogleAuthProvider()
+        .setCustomParameters({ prompt: 'select_account' }))
     .then(() => firebase.auth().getRedirectResult())
     .then(res => {
       store.dispatch('loginSuccess', res.user)
@@ -13,5 +16,8 @@ export function doLogin(): Promise<User> {
 }
 
 export function doLogout(): Promise<void> {
-  return firebase.auth().signOut();
+  store.dispatch('loginSuccess', null);
+  return firebase.auth().signOut().then(() => {
+    router.push('/login');
+  });
 }
