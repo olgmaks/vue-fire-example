@@ -11,3 +11,13 @@ declare global {
     }
   }
 }
+
+// 3. Declare augmentation for Vue
+import App = firebase.app.App;
+
+declare module 'vue/types/vue' {
+
+  interface Vue {
+    $fire: App
+  }
+}
