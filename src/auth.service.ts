@@ -23,7 +23,7 @@ export function doLogout(): Promise<void> {
   });
 }
 
-export function setCurrentAuthUser(user: User): Promise<User> {
+export function setCurrentAuthUser(user: User): User {
   store.dispatch('loginSuccess', user);
   return user;
 }
