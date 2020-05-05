@@ -3,11 +3,12 @@ import store from "@/store";
 import router from "@/router";
 
 export function doLogin(): Promise<User> {
+  const google = new firebase
+    .auth.GoogleAuthProvider()
+    .setCustomParameters({prompt: 'select_account'});
   return firebase
     .auth()
-    .signInWithRedirect(
-      new firebase.auth.GoogleAuthProvider()
-        .setCustomParameters({ prompt: 'select_account' }))
+    .signInWithRedirect(google)
     .then(() => firebase.auth().getRedirectResult())
     .then(res => {
       store.dispatch('loginSuccess', res.user)

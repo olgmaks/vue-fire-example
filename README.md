@@ -9,8 +9,10 @@ Tools
 Real world demo: https://avueua.web.app
 
 Some screen:
+<p align="center">
+  <img src="img.PNG" width="350" title="hover text">
+</p>
 
-![todolist](./img.PNG?raw=true "Title")
 
 ##### Project setup
 ```
