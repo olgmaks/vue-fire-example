@@ -10,9 +10,10 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item v-if="!currentUser" @click="onLogin">
+          <v-list-item @click="onLogin" v-if="!currentUser">
             <v-list-item-avatar>
-              <img src="https://cdn2.iconfinder.com/data/icons/social-icons-circular-color/512/google-512.png">
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/social-icons-circular-color/512/google-512.png">
             </v-list-item-avatar>
             <v-list-item-title>Sign in</v-list-item-title>
           </v-list-item>
@@ -24,9 +25,10 @@
             <v-list-item-title>{{currentUser.email}}</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
-          <v-list-item v-if="currentUser" @click="onLogout">
+          <v-list-item @click="onLogout" v-if="currentUser">
             <v-list-item-avatar>
-              <img src="https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Power_-_Logoff.png">
+              <img
+                src="https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Power_-_Logoff.png">
             </v-list-item-avatar>
             <v-list-item-title>Sign out</v-list-item-title>
           </v-list-item>
@@ -43,34 +45,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {doLogin, doLogout} from "@/auth.service";
-import router from "@/router";
+  import Vue from "vue";
+  import {doLogout} from "@/auth.service";
 
-export default Vue.extend({
-  name: "App",
+  export default Vue.extend({
+    name: "App",
 
-  data: () => ({}),
+    data: () => ({}),
 
-  computed: {
-    currentUser() {
-      return this.$store.getters.currentUser;
-    }
-  },
-
-  methods: {
-    onLogin() {
-      router.push({path: 'login'})
+    computed: {
+      currentUser() {
+        return this.$store.getters.currentUser;
+      }
     },
-    onLogout() {
-      doLogout()
+
+    methods: {
+      onLogin() {
+        this.$router.push({path: 'login'})
+      },
+      onLogout() {
+        doLogout()
+      }
     }
-  },
-  mounted(){
-    console.log('mounted')
-    if (!this.$store.getters.currentUser) {
-      router.push('login')
-    }
-  }
-});
+  });
 </script>

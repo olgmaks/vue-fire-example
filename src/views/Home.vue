@@ -69,11 +69,11 @@
     <TodoListItem
       :key="t.title"
       style="margin-top: 1em;"
-      v-for="t in todos"
-      v-bind:id="t.id"
-      v-bind:title="t.title"
-      v-bind:text="t.text"
       v-bind:date="t.date"
+      v-bind:id="t.id"
+      v-bind:text="t.text"
+      v-bind:title="t.title"
+      v-for="t in todos"
     >
 
     </TodoListItem>
@@ -86,8 +86,10 @@
   import {maxLength, required} from "vuelidate/lib/validators";
   import store from "@/store";
   import TodoListItem from '@/components/TodoListItem.vue';
+  import {getCurrentUser} from "@/auth.service";
+
   export default {
-    components: { TodoListItem },
+    components: {TodoListItem},
     mixins: [validationMixin],
 
     validations: {
@@ -190,7 +192,6 @@
       },
 
 
-
       clear() {
         this.$v.$reset();
         this.text = "";
@@ -203,15 +204,20 @@
 
     mounted() {
 
-      const u = this.$store.getters.currentUser
-      if (u) {
-        this.$fire.firestore().collection(`users/${u.uid}/tasks`)
-          .onSnapshot(data => {
-            console.log('on snapshot')
-            console.log(data);
-            store.dispatch('setTodoItemsList', data.docs.map(d => d.data()));
-          });
-      }
+      getCurrentUser().then(u => {
+
+        if (u) {
+          this.$fire.firestore().collection(`users/${u.uid}/tasks`)
+            .onSnapshot(data => {
+              console.log('on snapshot')
+              console.log(data);
+              store.dispatch('setTodoItemsList', data.docs.map(d => d.data()));
+            });
+        } else {
+          this.$router.push({path: 'welcome'})
+        }
+      });
+
     }
   };
 </script>

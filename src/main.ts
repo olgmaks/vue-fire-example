@@ -6,7 +6,6 @@ import vuetify from './plugins/vuetify';
 import firebase from './firebase';
 
 
-firebase.auth()
 
 Vue.config.productionTip = false;
 Vue.prototype.$fire = firebase;
