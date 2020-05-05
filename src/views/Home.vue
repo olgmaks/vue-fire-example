@@ -86,7 +86,7 @@
   import {maxLength, required} from "vuelidate/lib/validators";
   import store from "@/store";
   import TodoListItem from '@/components/TodoListItem.vue';
-  import {getCurrentUser} from "@/auth.service";
+  import {getCurrentAuthUser} from "@/auth.service";
 
   export default {
     components: {TodoListItem},
@@ -204,18 +204,19 @@
 
     mounted() {
 
-      getCurrentUser().then(u => {
-
+      getCurrentAuthUser().then(u => {
         if (u) {
-          this.$fire.firestore().collection(`users/${u.uid}/tasks`)
+          this.$fire
+            .firestore()
+            .collection(`users/${u.uid}/tasks`)
             .onSnapshot(data => {
-              console.log('on snapshot')
-              console.log(data);
               store.dispatch('setTodoItemsList', data.docs.map(d => d.data()));
             });
         } else {
           this.$router.push({path: 'welcome'})
         }
+      }).catch(e => {
+        console.log(e);
       });
 
     }

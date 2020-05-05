@@ -9,14 +9,15 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: '/welcome',
-    component: Welcome
-  },
-  {
     path: '/',
     name: 'Home',
     component: Home,
   },
+  {
+    path: '/welcome',
+    component: Welcome
+  },
+
   {
     path: '/login',
     component: Login
@@ -30,6 +31,7 @@ const router = new VueRouter({
 });
 
 store.subscribe((m, state) => {
+  console.log('store change: user')
   console.log(state.user);
 })
 

@@ -22,39 +22,27 @@
 
 <script lang="ts">
 
-  import {doLogin} from "@/auth.service";
+  import {doLogin, getCurrentAuthUser} from "@/auth.service";
 
   export default {
     name: "Login.vue",
     mounted() {
-      const unsubscribe =  this.$fire.auth().onAuthStateChanged(user => {
-
+      getCurrentAuthUser().then(user => {
         if (user) {
           this.$store.dispatch('loginSuccess', user);
           this.$router.push({path: '/'});
-
-
-          unsubscribe();
-
         } else {
-
           this.$fire.auth().getRedirectResult()
             .then(results => {
               if (!results.user) {
-
-                if (this.$route.path.indexOf('welcome') == -1) {
-                  doLogin();
-                }
-
+                doLogin();
               } else {
                 this.$store.dispatch('loginSuccess', results.user);
                 this.$router.push({path: '/'});
               }
-
-              unsubscribe();
             });
         }
-      });
+      })
 
     }
   }

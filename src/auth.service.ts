@@ -23,17 +23,21 @@ export function doLogout(): Promise<void> {
   });
 }
 
-export function getCurrentUser(): Promise<User> {
+export function setCurrentAuthUser(user: User): Promise<User> {
+  store.dispatch('loginSuccess', user);
+  return user;
+}
 
+export function getCurrentAuthUser(): Promise<User> {
   if (store.getters.currentUser) {
-    return new Promise((res, rej) => res(store.getters.currentUser));
+    return  Promise.resolve(store.getters.currentUser);
   }
   else {
-    return new Promise((resolve, reject) => {
+    return new Promise<User>((resolve, reject) => {
       const unsubscribe = firebase.auth().onAuthStateChanged(user => {
         unsubscribe();
         resolve(user);
       }, reject);
-    });
+    }).then(user => setCurrentAuthUser(user));
   }
 }
