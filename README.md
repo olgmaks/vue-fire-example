@@ -5,6 +5,7 @@ Tools
 - Vuetify 
 - Firestore
 - Firebase auth (Google)
+- PWA
 
 Real world demo: https://avueua.web.app
 
